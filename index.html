@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyPB - Malaysian Prospek Buying</title>
+    <meta name="description" content="A secure digital voucher platform enabling families to send financial support to inmates in Malaysian prisons.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                            950: '#052e16',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        /* Removed .hidden override to fix responsive display issues */
+        
+        /* Animation utility */
+        @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob { animation: blob 7s infinite; }
+        .animation-delay-2000 { animation-delay: 2s; }
+    </style>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="bg-white font-sans text-slate-800 antialiased">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 bg-white/95 backdrop-blur-sm border-b border-slate-200 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <!-- Logo -->
+                <a href="#" class="flex-shrink-0 flex items-center gap-2 group mr-2">
+                    <div class="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center group-hover:bg-primary-700 transition-colors shadow-md">
+                         <!-- Shield Heart Logo -->
+                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <path d="M12 8a2.5 2.5 0 0 0-2.5 2.5c0 2 2.5 4.5 2.5 4.5s2.5-2.5 2.5-4.5A2.5 2.5 0 0 0 12 8z" fill="currentColor" stroke="none"></path>
+                        </svg>
+                    </div>
+                    <span class="font-bold text-xl lg:text-2xl text-slate-800 tracking-tight group-hover:text-primary-800 transition-colors">MyPB</span>
+                </a>
+
+                <!-- Desktop Menu (MD and up) -->
+                <!-- Removed conflicting hidden class, using Tailwind responsive classes solely -->
+                <div class="hidden md:flex items-center space-x-1 lg:space-x-6">
+                    <div class="flex items-center space-x-2 lg:space-x-6 mr-1 lg:mr-2">
+                        <a href="#about" class="text-slate-600 hover:text-primary-600 font-semibold transition-colors text-xs lg:text-base whitespace-nowrap">
+                            <span class="lang-en">About</span>
+                            <span class="lang-bm hidden">Tentang Kami</span>
+                        </a>
+                        <a href="#how-it-works" class="text-slate-600 hover:text-primary-600 font-semibold transition-colors text-xs lg:text-base whitespace-nowrap">
+                            <span class="lang-en">How it Works</span>
+                            <span class="lang-bm hidden">Cara Guna</span>
+                        </a>
+                        <a href="#faq" class="text-slate-600 hover:text-primary-600 font-semibold transition-colors text-xs lg:text-base whitespace-nowrap">
+                            <span class="lang-en">Support</span>
+                            <span class="lang-bm hidden">Bantuan</span>
+                        </a>
+                    </div>
+                    
+                    <!-- Language Selector (Desktop/Tablet) -->
+                    <div class="flex items-center pl-2 lg:pl-4 border-l-2 border-slate-100">
+                        <div class="flex items-center bg-primary-50 p-1 rounded-lg border-2 border-primary-100 whitespace-nowrap">
+                            <svg class="w-3 h-3 lg:w-4 lg:h-4 text-primary-600 mr-1 lg:mr-2 ml-1 hidden lg:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <div class="flex">
+                                <button onclick="setLanguage('en')" class="px-2 lg:px-3 py-1 rounded-md text-xs lg:text-sm font-bold transition-all lang-btn bg-primary-600 text-white shadow-md ring-1 ring-primary-600" data-lang="en">EN</button>
+                                <button onclick="setLanguage('bm')" class="px-2 lg:px-3 py-1 rounded-md text-xs lg:text-sm font-bold transition-all lang-btn text-slate-600 hover:bg-white hover:text-primary-600" data-lang="bm">BM</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Header Right Side (< MD) -->
+                <div class="md:hidden flex items-center gap-3">
+                     <!-- Mobile/Tablet Language Toggle (High Contrast) -->
+                    <div class="flex items-center bg-primary-50 p-1 rounded-lg border-2 border-primary-100">
+                        <button onclick="setLanguage('en')" class="px-3 py-1.5 rounded-md text-xs font-bold transition-all lang-btn-mobile bg-primary-600 text-white shadow-md ring-1 ring-primary-600" data-lang="en">EN</button>
+                        <button onclick="setLanguage('bm')" class="px-3 py-1.5 rounded-md text-xs font-bold transition-all lang-btn-mobile text-slate-600 hover:bg-white hover:text-primary-600" data-lang="bm">BM</button>
+                    </div>
+
+                    <button id="mobile-menu-btn" class="text-slate-600 hover:text-slate-900 focus:outline-none p-2 ml-1 bg-slate-50 rounded-lg border border-slate-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel (< MD) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 absolute w-full shadow-xl">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="#about" class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:text-primary-600 hover:bg-primary-50">
+                    <span class="lang-en">About</span>
+                    <span class="lang-bm hidden">Tentang Kami</span>
+                </a>
+                <a href="#how-it-works" class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:text-primary-600 hover:bg-primary-50">
+                    <span class="lang-en">How it Works</span>
+                    <span class="lang-bm hidden">Cara Guna</span>
+                </a>
+                <a href="#faq" class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:text-primary-600 hover:bg-primary-50">
+                    <span class="lang-en">Support</span>
+                    <span class="lang-bm hidden">Bantuan</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="lg:grid lg:grid-cols-12 lg:gap-16 items-center">
+                
+                <div class="text-center lg:text-left lg:col-span-6">
+                    <h1 class="text-4xl tracking-tight font-extrabold text-slate-900 sm:text-5xl md:text-6xl mb-6">
+                        <span class="lang-en">Bridging the distance to <span class="text-primary-600">Malaysian Prisons</span></span>
+                        <span class="lang-bm hidden">Merapatkan hubungan ke <span class="text-primary-600">Penjara Malaysia</span></span>
+                    </h1>
+                    <p class="mt-4 text-lg text-slate-600 leading-relaxed mb-8">
+                        <span class="lang-en">MyPB (Malaysian Prospek Buying) is the trusted digital platform enabling families to purchase commissary vouchers for inmates securely. We help you support your loved ones from anywhere.</span>
+                        <span class="lang-bm hidden">MyPB (Malaysian Prospek Buying) adalah platform digital dipercayai yang membolehkan keluarga membeli baucar komisar untuk penghuni dengan selamat. Kami membantu anda menyokong orang tersayang dari mana sahaja.</span>
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <a href="https://kopenfam.seesharp.my/registerPage" class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 md:text-lg shadow-lg shadow-primary-500/30 transition-all hover:-translate-y-1">
+                            <span class="lang-en">Sign Up Free</span>
+                            <span class="lang-bm hidden">Daftar Percuma</span>
+                        </a>
+                        <a href="https://kopenfam.seesharp.my" class="inline-flex items-center justify-center px-8 py-3 border border-slate-300 text-base font-medium rounded-lg text-slate-700 bg-white hover:bg-slate-50 md:text-lg transition-colors">
+                            <span class="lang-en">Member Login</span>
+                            <span class="lang-bm hidden">Log Masuk Ahli</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mt-16 lg:mt-0 lg:col-span-6 relative">
+                    <!-- Abstract decoration -->
+                    <div class="absolute -top-12 -right-12 w-64 h-64 bg-primary-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+                    <div class="absolute -bottom-12 -left-12 w-64 h-64 bg-emerald-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+                    
+                    <div class="relative rounded-2xl shadow-2xl bg-white p-2 border border-slate-100 transform rotate-1 hover:rotate-0 transition-transform duration-500">
+                       <div class="rounded-xl overflow-hidden bg-slate-100 aspect-[4/3] relative group">
+                            <!-- Prison Complex Image (Sungai Buloh Prison) -->
+                            <img src="kajangHQ.jpeg" alt="Kompleks Penjara Kajang" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent flex flex-col justify-end p-6">
+                                <p class="text-white font-medium text-lg">
+                                    <span class="lang-en">"Staying connected matters."</span>
+                                    <span class="lang-bm hidden">"Hubungan kekeluargaan itu penting."</span>
+                                </p>
+                                <p class="text-slate-300 text-sm">
+                                    <span class="lang-en">Send your support today.</span>
+                                    <span class="lang-bm hidden">Hantar sokongan anda hari ini.</span>
+                                </p>
+                            </div>
+                       </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-base text-primary-600 font-semibold tracking-wide uppercase">
+                    <span class="lang-en">What is MyPB?</span>
+                    <span class="lang-bm hidden">Apa itu MyPB?</span>
+                </h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+                    <span class="lang-en">Secure Support System for Inmates</span>
+                    <span class="lang-bm hidden">Sistem Sokongan Selamat untuk Penghuni</span>
+                </p>
+                <p class="mt-4 text-xl text-slate-500">
+                    <span class="lang-en">Malaysian Prospek Buying (MyPB) replaces traditional cash transfers with a transparent, digital voucher system.</span>
+                    <span class="lang-bm hidden">Malaysian Prospek Buying (MyPB) menggantikan pemindahan tunai tradisional dengan sistem baucar digital yang telus.</span>
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+                <div class="bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:shadow-lg transition-shadow">
+                    <div class="w-14 h-14 mx-auto bg-primary-100 rounded-full flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">
+                        <span class="lang-en">Secure & Compliant</span>
+                        <span class="lang-bm hidden">Selamat & Patuh</span>
+                    </h3>
+                    <p class="text-slate-600">
+                        <span class="lang-en">Fully compliant with prison financial regulations, ensuring every sen reaches its destination safely.</span>
+                        <span class="lang-bm hidden">Mematuhi sepenuhnya peraturan kewangan penjara, memastikan setiap sen sampai ke destinasi dengan selamat.</span>
+                    </p>
+                </div>
+                <div class="bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:shadow-lg transition-shadow">
+                    <div class="w-14 h-14 mx-auto bg-primary-100 rounded-full flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">
+                        <span class="lang-en">Instant Processing</span>
+                        <span class="lang-bm hidden">Pemprosesan Segera</span>
+                    </h3>
+                    <p class="text-slate-600">
+                        <span class="lang-en">Digital vouchers are processed in real-time, reducing the waiting period for inmates to receive support.</span>
+                        <span class="lang-bm hidden">Baucar digital diproses dalam masa nyata, mengurangkan tempoh menunggu penghuni menerima bantuan.</span>
+                    </p>
+                </div>
+                <div class="bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:shadow-lg transition-shadow">
+                    <div class="w-14 h-14 mx-auto bg-primary-100 rounded-full flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">
+                        <span class="lang-en">Easy Access</span>
+                        <span class="lang-bm hidden">Akses Mudah</span>
+                    </h3>
+                    <p class="text-slate-600">
+                        <span class="lang-en">Manage your account, track history, and send vouchers from any device, anywhere in Malaysia.</span>
+                        <span class="lang-bm hidden">Urus akaun, jejak sejarah, dan hantar baucar dari mana-mana peranti, di mana sahaja di Malaysia.</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="py-24 bg-primary-900 text-white relative overflow-hidden">
+        <!-- Background patterns -->
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-extrabold sm:text-4xl mb-4">
+                    <span class="lang-en">How It Works</span>
+                    <span class="lang-bm hidden">Cara Ia Berfungsi</span>
+                </h2>
+                <p class="text-primary-200 text-lg max-w-2xl mx-auto">
+                    <span class="lang-en">Sending support to your loved ones is simple and transparent.</span>
+                    <span class="lang-bm hidden">Menghantar sokongan kepada orang tersayang adalah mudah dan telus.</span>
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <!-- Step 1 -->
+                <div class="relative flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-2xl bg-primary-700 border border-primary-500 flex items-center justify-center text-2xl font-bold mb-6 shadow-lg transform rotate-3">
+                        1
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">
+                        <span class="lang-en">Create Account</span>
+                        <span class="lang-bm hidden">Daftar Akaun</span>
+                    </h3>
+                    <p class="text-primary-200 leading-relaxed">
+                        <span class="lang-en">Sign up using your IC number and verify your identity to ensure a secure connection to the facility.</span>
+                        <span class="lang-bm hidden">Daftar menggunakan No. KP dan sahkan identiti anda untuk sambungan selamat ke fasiliti.</span>
+                    </p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-2xl bg-primary-700 border border-primary-500 flex items-center justify-center text-2xl font-bold mb-6 shadow-lg transform -rotate-2">
+                        2
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">
+                        <span class="lang-en">Verify Inmate Details</span>
+                        <span class="lang-bm hidden">Sahkan Maklumat Penghuni</span>
+                    </h3>
+                    <p class="text-primary-200 leading-relaxed">
+                        <span class="lang-en">Locate your family member by inputting their Inmate Number and selecting their current prison facility.</span>
+                        <span class="lang-bm hidden">Cari ahli keluarga dengan memasukkan Nombor Banduan dan memilih lokasi penjara mereka.</span>
+                    </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-2xl bg-primary-700 border border-primary-500 flex items-center justify-center text-2xl font-bold mb-6 shadow-lg transform rotate-2">
+                        3
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">
+                        <span class="lang-en">Send Voucher</span>
+                        <span class="lang-bm hidden">Hantar Baucar</span>
+                    </h3>
+                    <p class="text-primary-200 leading-relaxed">
+                        <span class="lang-en">Purchase a digital voucher. The amount is credited to the inmate's trust account for commissary use.</span>
+                        <span class="lang-bm hidden">Beli baucar digital. Jumlah dikreditkan ke akaun amanah penghuni untuk kegunaan komisar.</span>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="mt-16 text-center">
+                <a href="#" class="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-bold rounded-lg text-primary-900 bg-white hover:bg-primary-50 transition-all shadow-xl hover:-translate-y-1">
+                    <span class="lang-en">Get Started Now</span>
+                    <span class="lang-bm hidden">Mula Sekarang</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-24 bg-slate-50">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-extrabold text-slate-900 text-center mb-12">
+                <span class="lang-en">Frequently Asked Questions</span>
+                <span class="lang-bm hidden">Soalan Lazim</span>
+            </h2>
+            <div class="space-y-4">
+                <details class="group bg-white rounded-lg border border-slate-200 open:ring-2 open:ring-primary-500/50 open:border-primary-500">
+                    <summary class="flex justify-between items-center cursor-pointer p-6 font-medium text-slate-900 list-none">
+                        <span>
+                            <span class="lang-en">What information do I need to register?</span>
+                            <span class="lang-bm hidden">Apakah maklumat yang diperlukan untuk mendaftar?</span>
+                        </span>
+                        <span class="transition-transform group-open:rotate-180">
+                            <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="px-6 pb-6 text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
+                        <span class="lang-en">You will need your NRIC (MyKad), a valid mobile phone number for TAC verification, and the Inmate Number of the person you wish to support.</span>
+                        <span class="lang-bm hidden">Anda memerlukan Kad Pengenalan (MyKad), nombor telefon bimbit yang sah untuk pengesahan TAC, dan Nombor Banduan orang yang ingin anda bantu.</span>
+                    </div>
+                </details>
+                <details class="group bg-white rounded-lg border border-slate-200 open:ring-2 open:ring-primary-500/50 open:border-primary-500">
+                    <summary class="flex justify-between items-center cursor-pointer p-6 font-medium text-slate-900 list-none">
+                        <span>
+                            <span class="lang-en">Are there limits on the voucher amount?</span>
+                            <span class="lang-bm hidden">Adakah terdapat had jumlah baucar?</span>
+                        </span>
+                        <span class="transition-transform group-open:rotate-180">
+                            <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="px-6 pb-6 text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
+                        <span class="lang-en">Yes, spending limits are set by the prison authorities. Our system will notify you if a purchase exceeds the monthly quota for a specific inmate.</span>
+                        <span class="lang-bm hidden">Ya, had perbelanjaan ditetapkan oleh pihak berkuasa penjara. Sistem akan memaklumkan jika pembelian melebihi kuota bulanan bagi penghuni tersebut.</span>
+                    </div>
+                </details>
+                <details class="group bg-white rounded-lg border border-slate-200 open:ring-2 open:ring-primary-500/50 open:border-primary-500">
+                    <summary class="flex justify-between items-center cursor-pointer p-6 font-medium text-slate-900 list-none">
+                        <span>
+                            <span class="lang-en">What payment methods do you accept?</span>
+                            <span class="lang-bm hidden">Apakah kaedah pembayaran yang diterima?</span>
+                        </span>
+                        <span class="transition-transform group-open:rotate-180">
+                            <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="px-6 pb-6 text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
+                        <span class="lang-en">We accept all major Malaysian online banking options via FPX, as well as Visa and Mastercard credit/debit cards.</span>
+                        <span class="lang-bm hidden">Kami menerima semua pilihan perbankan dalam talian utama Malaysia melalui FPX, serta kad kredit/debit Visa dan Mastercard.</span>
+                    </div>
+                </details>
+                <details class="group bg-white rounded-lg border border-slate-200 open:ring-2 open:ring-primary-500/50 open:border-primary-500">
+                    <summary class="flex justify-between items-center cursor-pointer p-6 font-medium text-slate-900 list-none">
+                        <span>
+                            <span class="lang-en">How long does it take for the funds to arrive?</span>
+                            <span class="lang-bm hidden">Berapa lamakah masa untuk dana sampai?</span>
+                        </span>
+                        <span class="transition-transform group-open:rotate-180">
+                            <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="px-6 pb-6 text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
+                        <span class="lang-en">Transactions are processed immediately. However, it may take 24-48 hours for the prison administration to reflect the balance in the inmate's ledger for spending.</span>
+                        <span class="lang-bm hidden">Transaksi diproses serta-merta. Walau bagaimanapun, ia mungkin mengambil masa 24-48 jam untuk pentadbiran penjara mengemas kini baki dalam lejar penghuni.</span>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="bg-primary-700 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
+                <span class="lang-en">Ready to send support?</span>
+                <span class="lang-bm hidden">Bersedia untuk menghantar sokongan?</span>
+            </h2>
+            <p class="mt-4 text-xl text-primary-100 max-w-2xl mx-auto">
+                <span class="lang-en">Create an account today and ensure your loved ones have what they need. Safe, fast, and secure.</span>
+                <span class="lang-bm hidden">Buat akaun hari ini dan pastikan orang tersayang anda mendapat apa yang mereka perlukan. Selamat, pantas dan terjamin.</span>
+            </p>
+            <div class="mt-8">
+                <a href="#" class="inline-block bg-white text-primary-700 hover:bg-primary-50 font-bold py-3 px-8 rounded-lg shadow-lg transform transition hover:-translate-y-0.5">
+                    <span class="lang-en">Create Free Account</span>
+                    <span class="lang-bm hidden">Buat Akaun Percuma</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white pt-16 pb-8 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center gap-2 mb-6">
+                        <div class="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
+                            <!-- Shield Heart Logo -->
+                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                <path d="M12 8a2.5 2.5 0 0 0-2.5 2.5c0 2 2.5 4.5 2.5 4.5s2.5-2.5 2.5-4.5A2.5 2.5 0 0 0 12 8z" fill="currentColor" stroke="none"></path>
+                            </svg>
+                        </div>
+                        <span class="font-bold text-xl tracking-tight">MyPB</span>
+                    </div>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        <span class="lang-en">Supporting rehabilitation through efficient family connection.</span>
+                        <span class="lang-bm hidden">Menyokong pemulihan melalui hubungan kekeluargaan yang efisien.</span>
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-white mb-4">Platform</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li>
+                            <a href="#" class="hover:text-primary-400">
+                                <span class="lang-en">Home</span>
+                                <span class="lang-bm hidden">Utama</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#about" class="hover:text-primary-400">
+                                <span class="lang-en">About Us</span>
+                                <span class="lang-bm hidden">Tentang Kami</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#how-it-works" class="hover:text-primary-400">
+                                <span class="lang-en">Services</span>
+                                <span class="lang-bm hidden">Perkhidmatan</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-white mb-4">
+                        <span class="lang-en">Support</span>
+                        <span class="lang-bm hidden">Bantuan</span>
+                    </h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li>
+                            <a href="#faq" class="hover:text-primary-400">
+                                <span class="lang-en">Help Center</span>
+                                <span class="lang-bm hidden">Pusat Bantuan</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-primary-400">
+                                <span class="lang-en">Contact Us</span>
+                                <span class="lang-bm hidden">Hubungi Kami</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-primary-400">
+                                <span class="lang-en">Privacy Policy</span>
+                                <span class="lang-bm hidden">Dasar Privasi</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-white mb-4">
+                        <span class="lang-en">Contact</span>
+                        <span class="lang-bm hidden">Hubungi</span>
+                    </h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            support@mypb.com.my
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                            +60 3-8888 1234
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 pt-8 text-center text-sm text-slate-500">
+                &copy; 2025 Malaysian Prospek Buying. <span class="lang-en">All rights reserved.</span><span class="lang-bm hidden">Hak cipta terpelihara.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple Mobile Menu Toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if(menuBtn && mobileMenu) {
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        // Language Logic
+        function setLanguage(lang) {
+            const enElements = document.querySelectorAll('.lang-en');
+            const bmElements = document.querySelectorAll('.lang-bm');
+            const btns = document.querySelectorAll('.lang-btn, .lang-btn-mobile');
+
+            if (lang === 'bm') {
+                enElements.forEach(el => el.classList.add('hidden'));
+                bmElements.forEach(el => el.classList.remove('hidden'));
+                localStorage.setItem('lang', 'bm');
+                
+                // Update Button Styles for BM
+                btns.forEach(btn => {
+                    if(btn.getAttribute('data-lang') === 'bm') {
+                        // Active state for BM (Green, White Text)
+                        btn.classList.add('bg-primary-600', 'text-white', 'shadow-md', 'ring-1', 'ring-primary-600');
+                        btn.classList.remove('text-slate-600', 'hover:bg-white', 'hover:text-primary-600');
+                    } else {
+                        // Inactive state for EN
+                        btn.classList.remove('bg-primary-600', 'text-white', 'shadow-md', 'ring-1', 'ring-primary-600');
+                        btn.classList.add('text-slate-600', 'hover:bg-white', 'hover:text-primary-600');
+                    }
+                });
+
+            } else {
+                bmElements.forEach(el => el.classList.add('hidden'));
+                enElements.forEach(el => el.classList.remove('hidden'));
+                localStorage.setItem('lang', 'en');
+
+                 // Update Button Styles for EN
+                 btns.forEach(btn => {
+                    if(btn.getAttribute('data-lang') === 'en') {
+                        // Active state for EN (Green, White Text)
+                        btn.classList.add('bg-primary-600', 'text-white', 'shadow-md', 'ring-1', 'ring-primary-600');
+                        btn.classList.remove('text-slate-600', 'hover:bg-white', 'hover:text-primary-600');
+                    } else {
+                        // Inactive state for BM
+                        btn.classList.remove('bg-primary-600', 'text-white', 'shadow-md', 'ring-1', 'ring-primary-600');
+                        btn.classList.add('text-slate-600', 'hover:bg-white', 'hover:text-primary-600');
+                    }
+                });
+            }
+        }
+
+        // Init Language
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('lang') || 'en';
+            setLanguage(savedLang);
+        });
+    </script>
+</body>
+</html>
